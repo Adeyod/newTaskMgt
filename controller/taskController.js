@@ -17,7 +17,7 @@ const createTask = async (req, res) => {
       });
     }
 
-    const { title, description, startDate, dueDate, startTime, dueTime } =
+    const { title, description, startTime, dueTime } =
       req.body;
     if (!title || !description || !startTime || !dueTime) {
       return res.json({

@@ -17,10 +17,39 @@ const registerUser = async (req, res) => {
     });
   }
 
+  const trimmedFirstName = firstName.trim();
+  const trimmedLastName = lastName.trim();
+  console.log(trimmedLastName);
+
+  // check the name field to prevent input of unwanted characters
+  if (!/^[a-zA-Z0-9 -]+$/.test(trimmedFirstName)) {
+    return res.json({
+      message: 'Invalid input for first name...',
+      status: 400,
+      success: false,
+    });
+  }
+
+  if (!/^[a-zA-Z0-9 -]+$/.test(trimmedLastName)) {
+    return res.json({
+      message: 'Invalid input for last name...',
+      status: 400,
+      success: false,
+    });
+  }
+
   // check if password is greater than or equal to 8 characters
   if (password.length < 8) {
     return res.json({
       message: 'Password must be minimum of 8 characters',
+      status: 411,
+    });
+  }
+
+  // check if password is greater than or less than 20 characters
+  if (password.length > 20) {
+    return res.json({
+      message: 'Password must be maximum of 20 characters',
       status: 411,
     });
   }
@@ -123,7 +152,10 @@ const verifyUser = async (req, res) => {
 // Logic to login user
 const loginUser = async (req, res) => {
   try {
+    console.log(req.body);
     const { email, password } = req.body;
+    const query = /^[A-Za-z]+$/;
+
     // check if email or password is not empty
     if (!email || !password) {
       return res.json({
